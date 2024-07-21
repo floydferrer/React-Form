@@ -2,4 +2,14 @@
     display: inline-block;
     box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.16), 0 3px 3px 0 rgba(0, 0, 0, 0.23);
     margin: 10px;
+    vertical-align: middle;
+}
+
+.Box-text {
+    opacity: 0;
+}
+
+.Box-text:hover {
+    opacity: 1;
+    cursor: pointer;
 }

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const NewBoxForm = () => {
+const NewBoxForm = ({ addBox }) => {
     const initialFormState = {
         color: '',
         width: '',
@@ -19,16 +19,23 @@ const NewBoxForm = () => {
     const [formData, setFormData] = useState(initialFormState);
     const [isInvalid, setIsInvalid] = useState(initialInvalidState);
     const [isTouched, setIsTouched] = useState(initialTouchedState);
-    console.log(isTouched);
     const handleChange = e => {
-        console.log(isTouched);
-        setIsTouched(isTouched[e.target.name] = true);
-        console.log(isTouched);
+        setIsTouched(prev => ({
+            ...prev,
+            [e.target.name]: true
+        }));
+        // setIsTouched(isTouched[e.target.name] = true);
         const {name, value} = e.target;
         if(value === '') {
-            setIsInvalid(isInvalid[e.target.name] = true);
+            setIsInvalid(prev => ({
+                ...prev,
+                [e.target.name]: true
+            }));
         } else {
-            setIsInvalid(isInvalid[e.target.name] = false);
+            setIsInvalid(prev => ({
+                ...prev,
+                [e.target.name]: false
+            }));
         }
 
         setFormData(data => ({
@@ -40,8 +47,9 @@ const NewBoxForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const { color } = formData;
-        if(!isInvalid) {
-            alert(`${color} box added!`);
+        if(!isInvalid.color && !isInvalid.width && !isInvalid.height) {
+            // alert(`${color} box added!`);
+            addBox({...formData})
             setFormData(initialFormState);
         }
     }
@@ -71,7 +79,7 @@ const NewBoxForm = () => {
             />
             {isInvalid.width && isTouched.width && <span style={{color: 'red'}}>Width cannot be blank!</span>}
             
-            <label htmlFor="height">height</label>
+            <label htmlFor="height">Height</label>
             <input
                 type="number"
                 placeholder="height"
@@ -81,7 +89,7 @@ const NewBoxForm = () => {
                 onChange={handleChange}
             />
             {isInvalid.height && isTouched.height && <span style={{color: 'red'}}>Height cannot be blank!</span>}
-            <button>Add Box</button>
+            <button role="button">Add Box</button>
         </form>
     )
 }
